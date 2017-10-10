@@ -2,16 +2,37 @@ const path = require('path');
 
 module.exports = (Franz, options) => {
   const getMessages = () => {
-    // get unread messages
-    const updates = document.getElementById('franz').getAttribute('data-unread');
 
-    // get conversations in 'My Inbox'
-    const inbox = document.getElementById('franz').getAttribute('data-inbox');
 
-    // set Franz badge
-    // updates => active unread count
-    // inbox => passive unread count
-    Franz.setBadge(updates, inbox);
+    var inbox = 0;
+    var updates = 0;
+
+    var rippleChatElem = document.querySelector("#chat-manager-item-instrument-XRP");
+
+     var inboxElem = document.querySelector(".notifications-count-number");
+
+     if(inboxElem != null){
+       inbox = parseInt(inboxElem.innerText);
+     }
+
+
+     if(rippleChatElem != null){
+
+       var badgeElem = rippleChatElem.querySelector(".chat-manager-item-avatar-badge");
+
+       if(badgeElem != null){
+         updates = parseInt(badgeElem.innerText);
+       }
+     }
+
+
+     if(inbox > 0) {
+       Franz.setBadge(inbox);
+     }
+     else{
+       Franz.setBadge(0, updates > 0);
+     }
+
   };
 
   // inject franz.css stylesheet
